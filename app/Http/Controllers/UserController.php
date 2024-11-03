@@ -38,10 +38,10 @@ class UserController extends Controller
     //to login - user/admin
     public function login(LoginRequest $request)
     {
-        $loginData = $request(['email', 'password']);
+        $loginData = $request->only(['email', 'password']); //as it is obj of req cant use req([],[]) ,instead use ->only
         try {
             if (! $token = auth()->attempt($loginData)) {
-                return response()->json(['error' => 'unauthorised'], 401);
+                return response()->json(['error' => 'Either email or password entered is wrong'], 401);
             }
 
             return $this->respondWithToken($token);
@@ -53,6 +53,23 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function logout(): Returntype
+    {
+        auth()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    // public function refresh()
+    // {
+    //     return $this->respondWithToken(auth()->refresh());
+    // }
 
     //generate jwt
     /**

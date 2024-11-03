@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class TaskValidation extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,9 +22,12 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'name' => 'bail|required|min:3|max:100',
-            'email' => 'bail|required|email|max:255',
-            'password' => 'bail|required|string|min:6|max:18',
+            'title' => 'bail|required|string|max:255',
+            'description' => 'bail|required|string|max:65534',
+            'long_description' => 'bail|nullable|string',
+            'priority' => 'bail|required|in:hig,medium,low',
+            'completed' => 'bail|required|boolean',
+            'start_date' => 'bail|required|date|before:tomorrow',
         ];
     }
 }

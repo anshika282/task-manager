@@ -10,5 +10,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([], function () {
     Route::post('/register', [UserController::class, 'signUp']);
-    Route::post('/login', [UserController::class, 'signUp']);
+    Route::post('/login', [UserController::class, 'login']);
+});
+
+Route::group(['middleware' => 'api'], function () {
+    Route::post('/logout', [UserController::class, 'logout']);
+    Route::group(['prefix' => 'tasks'], function () {
+        Route::post('/', [TaskController::class, 'createTask']);
+    });
 });
